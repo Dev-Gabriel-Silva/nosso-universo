@@ -10,7 +10,7 @@ function remove() {
     vamos.width = 300;
     body.appendChild(vamos)
     const h1 = document.createElement("h1");
-    h1.innerText = "Vamos minha zero two <3"
+    h1.innerText = "Vamos então zero two, amo você"
     body.appendChild(h1)
     h1.style.fontFamily = "monospace"
     h1.style.fontSize = "12px"
