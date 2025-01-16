@@ -3,15 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amo você</title>
+    <title>DuoFlix</title>
     <link rel="icon" href="./duck.svg">
 </head>
 <body>
-    <main>
-        <h1>Almoçar Estrelinha? 🤔🦆</h1> 
-        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fc.tenor.com%2FRYLPCaKM-RoAAAAM%2Fduck-drinking.gif&f=1&nofb=1&ipt=b1e9c54cf8a1352ecbd0cc772b19281a80b4514bbccf6855885f0b54e8b8c6d2&ipo=images" alt="">
-        <button>VAMOS!</button>
-    </main>
-    <script src="./script.js"></script>
+
+    <div id="movie-list"></div>
+
+    <script>
+      const movieListContainer = document.getElementById('movie-list');
+      const API_KEY = "de311323921e12c42bb99e8c0f0f35f6";
+      const BASE_URL = "https://api.themoviedb.org/3";
+
+      // Função para exibir filmes
+      const displayMovies = (movies) => {
+        movieListContainer.innerHTML = ''; // Limpa a lista
+        movies.forEach(movie => {
+          const movieElement = document.createElement('div');
+          movieElement.classList.add('movie-card');
+
+          // Verificar se o poster_path está disponível
+          const posterPath = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : './default-poster.jpg';
+
+          movieElement.innerHTML = `
+            <img src="${posterPath}" alt="${movie.title}">
+            <h3>${movie.title}</h3>
+            <p>${movie.overview}</p>
+            <button onclick="showMovieDetails(${movie.id})">Ver Detalhes</button>
+          `;
+          movieListContainer.appendChild(movieElement);
+        });
+      };
+
+      // Função para buscar filmes populares
+      const fetchPopularMovies = async () => {
+        try {
+          const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}`);
+          const data = await response.json();
+          if (data.results) {
+            return data.results;
+          } else {
+            console.error('Nenhum filme encontrado');
+            return [];
+          }
+        } catch (error) {
+          console.error('Erro ao buscar filmes:', error);
+          return [];
+        }
+      };
+
+      // Carregar filmes populares
+      fetchPopularMovies().then(displayMovies);
+
+      // Exemplo de função para mostrar detalhes de um filme (a ser implementada)
+      const showMovieDetails = (movieId) => {
+        alert(`Mostrar detalhes do filme com ID: ${movieId}`);
+      };
+    </script>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
